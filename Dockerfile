@@ -40,3 +40,10 @@ RUN apt-get update \
 COPY --from=openmpi /usr/local /usr/local
 COPY --from=nccl_tests /root/nccl_tests/build/* /usr/local/bin/
 RUN ldconfig
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+ADD https://developer.nvidia.com/rdp/assets/nsight-systems-2019-3-linux-deb-installer /tmp/nsight-systems.deb
+RUN dpkg -i /tmp/nsight-systems.deb
+RUN ln -s /opt/nvidia/nsightsystems/nsightsystems-2019.3.6/Target-x86_64/x86_64/nsys /usr/local/bin/nsys
